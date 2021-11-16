@@ -12,6 +12,9 @@ import i3ipc
 
 DEFAULT_INCREMENT = "10 px or 10 ppt"
 
+# gapsize to support i3-gaps
+GAP_SIZE = 30
+
 if len(sys.argv) < 2:
     sys.exit(-1)
 key = sys.argv[1].lower()
@@ -23,19 +26,19 @@ else:
 
 def is_at_top_edge(focused):
     workspace = focused.workspace()
-    return focused.rect.y - focused.deco_rect.height == workspace.rect.y
+    return focused.rect.y - focused.deco_rect.height - GAP_SIZE <= workspace.rect.y
 
 def is_at_bottom_edge(focused):
     workspace = focused.workspace()
-    return focused.rect.y + focused.rect.height == workspace.rect.y + workspace.rect.height
+    return focused.rect.y + focused.rect.height + GAP_SIZE >= workspace.rect.y + workspace.rect.height
 
 def is_at_left_edge(focused):
     workspace = focused.workspace()
-    return focused.rect.x == workspace.rect.x
+    return focused.rect.x - GAP_SIZE <= workspace.rect.x
 
 def is_at_right_edge(focused):
     workspace = focused.workspace()
-    return focused.rect.x + focused.rect.width == workspace.rect.x + workspace.rect.width
+    return focused.rect.x + focused.rect.width + GAP_SIZE >= workspace.rect.x + workspace.rect.width
 
 
 i3 = i3ipc.Connection()
